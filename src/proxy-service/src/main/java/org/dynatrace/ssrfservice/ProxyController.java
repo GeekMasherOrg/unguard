@@ -22,6 +22,7 @@ import io.opentracing.Span;
 import io.opentracing.Tracer;
 import io.opentracing.tag.Tags;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -89,8 +90,9 @@ public class ProxyController {
             execute = httpclient.execute(httpget, httpContext);
             InputStream content = execute.getEntity().getContent();
             String s = IOUtils.toString(content, Charset.defaultCharset());
+            String escapedContent = org.apache.commons.text.StringEscapeUtils.escapeHtml4(s);
             execute.close();
-            return s;
+            return escapedContent;
         } catch (Exception e) {
             finishCurrentSpanWithError(httpContext, e);
 
