@@ -43,7 +43,8 @@ namespace AdService.Pages.Shared
                 "http://"
                 + Environment.GetEnvironmentVariable("USER_AUTH_SERVICE_ADDRESS")
                 + "/auth/isValid");
-            var payload = "{\"jwt\":\"" + jwt + "\"}";
+            var sanitizedJwt = WebUtility.HtmlEncode(jwt);
+            var payload = "{\"jwt\":\"" + sanitizedJwt + "\"}";
             var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
             HttpResponseMessage userAuthServiceResponse;
